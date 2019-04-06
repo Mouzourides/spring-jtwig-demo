@@ -1,0 +1,85 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.5.xsd">
+
+    <changeSet author="nikolas.mouzourides@gmail.com" id="0001-1">
+        <createTable tableName="answer">
+            <column name="id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(35)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="correct" type="BOOLEAN">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addPrimaryKey tableName="answer" columnNames="id" constraintName="pk_answer"/>
+
+        <createTable tableName="question">
+            <column name="id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(35)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="total_answers" type="SMALLINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="number" type="SMALLINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="answer_id" type="UUID">
+                <constraints nullable="false" foreignKeyName="fk_answer_question" referencedTableName="answer"
+                             referencedColumnNames="id"/>
+            </column>
+        </createTable>
+
+        <addPrimaryKey tableName="question" columnNames="id" constraintName="pk_question"/>
+
+        <createTable tableName="quiz">
+            <column name="id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(35)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="total_questions" type="SMALLINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_timestamp" type="DATETIME">
+                <constraints nullable="false"/>
+            </column>
+            <column name="question_id" type="UUID">
+                <constraints nullable="false" foreignKeyName="fk_question_quiz" referencedTableName="question"
+                             referencedColumnNames="id"/>
+            </column>
+        </createTable>
+
+        <addPrimaryKey tableName="quiz" columnNames="id" constraintName="pk_quiz"/>
+
+        <createTable tableName="user">
+            <column name="id" type="UUID">
+                <constraints nullable="false"/>
+            </column>
+            <column name="username" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="email" type="VARCHAR(50)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="password" type="VARCHAR(255)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="created_timestamp" type="DATETIME">
+                <constraints nullable="false"/>
+            </column>
+            <column name="quiz_id" type="UUID">
+                <constraints nullable="false" unique="true" uniqueConstraintName="uk_customer_id"/>
+            </column>
+        </createTable>
+        <addPrimaryKey tableName="user" columnNames="id" constraintName="pk_user"/>
+    </changeSet>
+</databaseChangeLog>
